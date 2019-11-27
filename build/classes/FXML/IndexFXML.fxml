@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="467.0" prefWidth="708.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.IndexFXMLController">
+   <children>
+      <HBox layoutY="7.0" prefHeight="78.0" prefWidth="708.0">
+         <children>
+            <Label fx:id="lbl_usr" text="Label">
+               <HBox.margin>
+                  <Insets left="20.0" top="20.0" />
+               </HBox.margin>
+               <font>
+                  <Font size="29.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
+      <VBox fx:id="vb_admin" layoutY="85.0" prefHeight="383.0" prefWidth="189.0">
+         <children>
+            <HBox fx:id="hb_tpa1" alignment="CENTER" onMouseClicked="#PesanAdminKlik" onMouseEntered="#hbadmin1" onMouseExited="#hbadmout1" prefHeight="26.0" prefWidth="189.0">
+               <children>
+                  <Label text="Tambah Pesanan">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </Label>
+               </children>
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox fx:id="hb_ld2" alignment="CENTER" layoutX="10.0" layoutY="10.0" onMouseClicked="#LihatDataKlik" onMouseEntered="#hbadmin2" onMouseExited="#hbadmout2" prefHeight="26.0" prefWidth="189.0">
+               <children>
+                  <Label text="Lihat Data">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </Label>
+               </children>
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox fx:id="hb_cs3" alignment="CENTER" layoutX="10.0" layoutY="76.0" onMouseClicked="#StokKlik" onMouseEntered="#hbadmin3" onMouseExited="#hbadmout3" prefHeight="26.0" prefWidth="189.0">
+               <children>
+                  <Label text="Cek Stok">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </Label>
+               </children>
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
