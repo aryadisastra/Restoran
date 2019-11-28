@@ -6,12 +6,14 @@
 package Controller;
 
 import Koneksi.Koneksi;
+import Support.UntukTabel;
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.Statement;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.util.ResourceBundle;
-import javafx.event.ActionEvent;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -19,19 +21,20 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javax.swing.JOptionPane;
 
 /**
  * FXML Controller class
  *
- * @author viugraph
+ * @author LABKOM01-RPL07
  */
-public class IndexAdminFXMLController implements Initializable {
+public class LihatDataAdminFXMLController implements Initializable {
+
     @FXML
     private Label lbl_usr;
     @FXML
@@ -42,24 +45,31 @@ public class IndexAdminFXMLController implements Initializable {
     private HBox hb_ld2;
     @FXML
     private HBox hb_cs3;
-    Stage stage = new Stage();
-    Stage closeStage = new Stage();
     @FXML
-    private TextField tf_nama;
+    private TableView<UntukTabel> tbl_data;
     @FXML
-    private TextField tf_masakan;
+    private TableColumn<UntukTabel, String> col_no;
     @FXML
-    private TextField tf_jumlah;
+    private TableColumn<UntukTabel, String> col_nama;
+    @FXML
+    private TableColumn<UntukTabel, String> col_masakan;
+    @FXML
+    private TableColumn<UntukTabel, String> col_jumlah;
     Connection con;
     Statement stm;
     ResultSet rs;
+    
+    Stage closeStage = new Stage();
+    UntukTabel ut = new UntukTabel();
+    ObservableList<UntukTabel> listdata;
+    Integer urut = 0;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        Koneksi db = new Koneksi();
+    Koneksi db = new Koneksi();
         db.config();
         con = db.con;
         stm = db.stm;
@@ -83,6 +93,7 @@ public class IndexAdminFXMLController implements Initializable {
 
     @FXML
     private void PesanAdminKlik(MouseEvent event) {
+        Stage stage = new Stage();
         try{
         FXMLLoader fxmlloader= new
                 FXMLLoader(getClass().getResource("/FXML/IndexAdminFXML.fxml"));
@@ -156,16 +167,59 @@ public class IndexAdminFXMLController implements Initializable {
     }
 
     @FXML
-    private void simpanKlik(ActionEvent event) {
-        
-        try{
-            String sql = "Insert into testt(nama, masakan, jumlah) values('"+tf_nama.getText()+"','"+tf_masakan.getText()+"','"+tf_jumlah.getText()+"')";
-            stm.executeUpdate(sql);
-            JOptionPane.showMessageDialog(null, "Berhasil Input!!");
-        }catch(Exception e)
-        {
-            JOptionPane.showMessageDialog(null, e);
-        }
+    private void tabelKlik(MouseEvent event) {
+        UntukTabel ambil = tbl_data.getSelectionModel().getSelectedItem();
     }
     
+    private void tabel()
+    {
+        col_no.setCellValueFactory((TableColumn.CellDataFeatures<UntukTabel, String> celData) -> 
+            celData.getValue().noProperty()
+        );
+        col_nama.setCellValueFactory((TableColumn.CellDataFeatures<UntukTabel, String> celData) -> 
+            celData.getValue().namaProperty()
+        );
+        col_masakan.setCellValueFactory((TableColumn.CellDataFeatures<UntukTabel, String> celData) -> 
+            celData.getValue().masakanProperty()
+        );
+        col_jumlah.setCellValueFactory((TableColumn.CellDataFeatures<UntukTabel, String> celData) -> 
+            celData.getValue().jumlahProperty()
+        );
+        listdata = FXCollections.observableArrayList();
+        tbl_data.getSelectionModel().clearSelection();
+    }
+    private void aksitabel()
+    {
+        listdata = getDataAll();
+        tbl_data.setItems(listdata);
+    }
+    
+    public ObservableList<UntukTabel> getDataAll()
+    {
+        ObservableList<UntukTabel> listdata =FXCollections.observableArrayList();
+        try{
+            Koneksi db = new Koneksi();
+            db.config();
+            con = db.con;
+            stm = db.stm;
+            String sql = "Select * from testt";
+            rs= stm.executeQuery(sql);
+            while(rs.next())
+            {
+                urut = urut+1;
+                String nomer = urut.toString();
+                
+                UntukTabel d = new UntukTabel();
+                d.setNo(nomer);
+                d.setNama(rs.getString("nama"));
+                d.setMasakan(rs.getString("masakan"));
+                d.setJumlah(rs.getString("jumlah"));
+                listdata.add(d);
+            }
+        }catch(Exception e)
+        {
+            
+        }
+        return listdata;
+    }
 }

@@ -104,6 +104,27 @@ public class IndexFXMLController implements Initializable {
 
     @FXML
     private void LihatDataKlik(MouseEvent event) {
+        Stage stage = new Stage();
+        try{
+        FXMLLoader fxmlloader= new
+                FXMLLoader(getClass().getResource("/FXML/LihatDataAdminFXML.fxml"));
+                Parent root=(Parent) fxmlloader.load();
+                Node node = (Node)event.getSource();
+                closeStage =(Stage) node.getScene().getWindow();
+                closeStage.close();
+                LihatDataAdminFXMLController in = fxmlloader.getController();
+                in.setAkses(lbl_usr.getText());
+                stage.setScene(new Scene(root));
+                //stage.setResizable(false);
+               // stage.setFullScreen(true);
+                //stage.setFullScreenExitHint("Layar Anda Akan Otomatis Full Screen");
+              //  stage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
+                stage.show();
+        }
+        catch(Exception e)
+        {
+            
+        }
     }
 
     @FXML
