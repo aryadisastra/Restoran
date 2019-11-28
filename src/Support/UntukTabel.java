@@ -85,7 +85,7 @@ public class UntukTabel {
     }
     public StringProperty namaProperty()
     {
-        return masakan;
+        return nama;
     }
     public String getMasakan()
     {

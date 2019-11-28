@@ -14,6 +14,7 @@ import java.sql.ResultSet;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -23,6 +24,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -63,6 +65,12 @@ public class LihatDataAdminFXMLController implements Initializable {
     UntukTabel ut = new UntukTabel();
     ObservableList<UntukTabel> listdata;
     Integer urut = 0;
+    @FXML
+    private TextField tf_nama;
+    @FXML
+    private TextField tf_masakan;
+    @FXML
+    private TextField tf_jumlah;
 
     /**
      * Initializes the controller class.
@@ -73,6 +81,8 @@ public class LihatDataAdminFXMLController implements Initializable {
         db.config();
         con = db.con;
         stm = db.stm;
+        tabel();
+        aksitabel();
     }    
     public void setAkses(String akses)
     {
@@ -169,6 +179,9 @@ public class LihatDataAdminFXMLController implements Initializable {
     @FXML
     private void tabelKlik(MouseEvent event) {
         UntukTabel ambil = tbl_data.getSelectionModel().getSelectedItem();
+        tf_nama.setText(ambil.getNama());
+        tf_masakan.setText(ambil.getMasakan());
+        tf_jumlah.setText(ambil.getJumlah());
     }
     
     private void tabel()
@@ -218,8 +231,37 @@ public class LihatDataAdminFXMLController implements Initializable {
             }
         }catch(Exception e)
         {
-            
+            e.printStackTrace();
         }
         return listdata;
+    }
+
+    @FXML
+    private void editKlik(ActionEvent event) {
+        try{
+            String sql = "update testt set nama = '"+tf_nama.getText()+"', masakan = '"+tf_masakan.getText()+"', jumlah = '"+tf_jumlah.getText()+"' where nama = '"+tf_nama.getText()+"'";
+            stm.execute(sql);
+            tabel();
+            aksitabel();
+            tf_jumlah.setText("");
+            tf_masakan.setText("");
+            tf_nama.setText("");
+        }catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void hapusKlik(ActionEvent event) {
+        try{
+            String sql = "delete from testt where nama = '"+tf_nama.getText()+"'";
+            stm.execute(sql);
+            tabel();
+            aksitabel();
+        }catch(Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 }
